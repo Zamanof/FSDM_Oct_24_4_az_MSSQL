@@ -1,4 +1,4 @@
-﻿-- Transactions - Tranzaksiyalar
+﻿--- Transactions - Tranzaksiyalar
 
 ﻿/*
 	Тranzaksiyalar(Transactions)
@@ -62,44 +62,45 @@
     SAVE TRANSACTION - saxlanma nöqtəsinin təyin edilməsi
 	*/
 
+
 --CREATE PROC AddCommentMark
 --@comid AS int,
 --@userid AS int,
 --@mark AS int
 --AS
---BEGIN
---	BEGIN TRAN CommentMark
+--	BEGIN
+--		BEGIN TRAN CommentMark
 
---	INSERT INTO CommentRating(IdComment, IdUser, Mark)
---	VALUES(@comid, @userid, @mark)
+--		INSERT INTO CommentRating(IdUser, IdComment, Mark)
+--		VALUES(@userid, @comid, @mark)
 
 --		IF @@ERROR != 0
---		BEGIN
---			PRINT 'Error in INSERT'
---			ROLLBACK TRAN CommentMark
---		END
---		ELSE
---		BEGIN
---			PRINT 'INSERT OK'
---			UPDATE Comments
---			SET Rating = (  SELECT CAST(SUM(Mark) AS float) / COUNT(*)
---							FROM Comments AS C
---							INNER JOIN CommentRating AS CR
---									ON C.Id = CR.IdComment
---							WHERE C.Id = @comid)
---			WHERE Comments.Id = @comid
-			
---			IF @@ERROR != 0
 --			BEGIN
---				PRINT 'Error in UPDATE'
+--				PRINT 'INSERT ERROR'
 --				ROLLBACK TRAN CommentMark
 --			END
---			ELSE
---			BEGIN 
---				PRINT 'UPDATE OK'
---				COMMIT TRAN CommentMark
+--		ELSE
+--			BEGIN
+--				PRINT 'INSERT OK'
+--				UPDATE Comments
+--				SET Rating = (	SELECT CAST(SUM(Mark) AS float) / COUNT(*)
+--								FROM Comments AS C
+--								INNER JOIN CommentRating AS CR
+--								ON C.Id = CR.IdComment
+--								WHERE C.Id = @comid)
+--				WHERE Id = @comid
+--				IF @@ERROR != 0
+--					BEGIN
+--						PRINT 'UPDATE ERROR'
+--						ROLLBACK TRAN CommentMark
+--					END
+--				ELSE
+--					BEGIN
+--						PRINT 'UPDATE OK'
+--						COMMIT TRAN CommentMark
+--					END
 --			END
---		END
---END
+--	END
 
---EXEC AddCommentMark 2, 1, 4
+
+--EXEC AddCommentMark 2, 3, 4
